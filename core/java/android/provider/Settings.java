@@ -59,7 +59,7 @@ import java.util.Map;
 public final class Settings {
 
     // Intent actions for Settings
-
+	public static final String SETTINGS_CHANGED = "android.settings.SETTINGS_CHANGED_ACTION";
     /**
      * Activity Action: Show system settings.
      * <p>
@@ -1645,6 +1645,22 @@ public final class Settings {
          */
         public static final String NOTIFICATION_LIGHT_PULSE = "notification_light_pulse";
 
+		/** @hide */
+		public static final String NOTIFICATION_LIGHT_BLINK = "notification_light_blink";
+		
+		/**
+		 * @hide
+		 */
+		public static final String NOTIFICATION_LIGHT_ALWAYS_ON = "notification_light_always_on";
+		
+		/**
+		 * @hide
+		 */
+		public static final String NOTIFICATION_LIGHT_CHARGING = "notification_light_charging";
+		
+		/** @hide */
+		public static final String NOTIFICATION_LIGHT_COLOR = "notification_light_color";
+
         /**
          * Show pointer location on screen?
          * 0 = no
@@ -1748,11 +1764,54 @@ public final class Settings {
          */
         public static final String SIP_ASK_ME_EACH_TIME = "SIP_ASK_ME_EACH_TIME";
 
+		/** @hide */
+		public static final String TORCH_STATE = "torch_state";
+
         /**
          * Whether to wake the screen with the trackball. The value is boolean (1 or 0).
          * @hide
          */
         public static final String TRACKBALL_WAKE_SCREEN = "trackball_wake_screen";
+
+		/**
+		 * @hide
+		 */
+		public static final String EXPANDED_VIEW_WIDGET = "expanded_view_widget";
+		
+		/**
+		 * @hide
+		 */
+		public static final String EXPANDED_HIDE_ONCHANGE = "expanded_hide_onchange";
+		
+		/**
+		 * @hide
+		 */
+		public static final String WIDGET_BUTTONS = "expanded_widget_buttons";
+		
+		/**
+		 * @hide
+		 */
+		public static final String EXPANDED_BRIGHTNESS_MODE = "expanded_brightness_mode";
+		
+		/**
+		 * @hide
+		 */
+		public static final String EXPANDED_NETWORK_MODE = "expanded_network_mode";
+		
+		/**
+		 * @hide
+		 */
+		public static final String EXPANDED_SCREENTIMEOUT_MODE = "expanded_screentimeout_mode";
+		
+		/**
+		 * @hide
+		 */
+		public static final String EXPANDED_RING_MODE = "expanded_ring_mode";
+		
+		/**
+		 * @hide
+		 */
+		public static final String EXPANDED_FLASH_MODE = "expanded_flash_mode";
 
 
         /**
