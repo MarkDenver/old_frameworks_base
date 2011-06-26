@@ -1414,6 +1414,11 @@ public final class Settings {
          */
         public static final String VIBRATE_IN_SILENT = "vibrate_in_silent";
 
+		/**
+		 * @hide
+		 */
+		public static final String VOLUME_CONTROL_SILENT = "volume_control_silent";
+
         /**
          * The mapping of stream type (integer) to its setting.
          */
@@ -1773,6 +1778,16 @@ public final class Settings {
          */
         public static final String TRACKBALL_WAKE_SCREEN = "trackball_wake_screen";
 
+		/**
+		 * @hide
+		 */
+		public static final String LOCKSCREEN_MUSIC_CONTROLS = "lockscreen_music_controls";
+		
+		/**
+		 * @hide
+		 */
+		public static final String LOCKSCREEN_ALWAYS_MUSIC_CONTROLS = "lockscreen_always_music_controls";
+		
 		/**
 		 * @hide
 		 */
