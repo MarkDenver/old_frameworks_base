@@ -16,15 +16,14 @@
 
 package com.android.systemui.statusbar;
 
-import android.app.Service;
-import com.android.internal.statusbar.IStatusBar;
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.statusbar.StatusBarIconList;
 import com.android.internal.statusbar.StatusBarNotification;
 import com.android.systemui.statusbar.powerwidget.PowerWidget;
 import com.android.systemui.R;
-
+import android.os.IPowerManager;
+import android.provider.Settings.SettingNotFoundException;
 import android.app.ActivityManagerNative;
 import android.app.Dialog;
 import android.app.Notification;
@@ -32,26 +31,28 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.app.StatusBarManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.os.Binder;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.util.Slog;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -65,23 +66,18 @@ import android.view.WindowManager;
 import android.view.WindowManagerImpl;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.FrameLayout;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
-import com.android.systemui.R;
-import com.android.systemui.statusbar.policy.StatusBarPolicy;
-
-
 
 public class StatusBarService extends Service implements CommandQueue.Callbacks {
     static final String TAG = "StatusBarService";
@@ -176,6 +172,22 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
 
     // for disabling the status bar
     int mDisabled = 0;
+    Context mContext;
+
+    // tracks changes to settings, so status bar is moved to top/bottom
+    // as soon as cmparts setting is changed
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.EXPANDED_VIEW_WIDGET), false, this);
+            onChange(true);
+        }
+    }
 
     private class ExpandedDialog extends Dialog {
         ExpandedDialog(Context context) {
@@ -202,6 +214,13 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
         // First set up our views and stuff.
         mDisplay = ((WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         makeStatusBarView(this);
+
+        // receive broadcasts
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+        filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(mBroadcastReceiver, filter);
 
         // Connect in to the status bar manager service
         StatusBarIconList iconList = new StatusBarIconList();
@@ -234,7 +253,7 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
                 addNotification(notificationKeys.get(i), notifications.get(i));
             }
         } else {
-            Log.wtf(TAG, "Notification list length mismatch: keys=" + N
+            Slog.e(TAG, "Notification list length mismatch: keys=" + N
                     + " notifications=" + notifications.size());
         }
 
@@ -324,6 +343,8 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
         mTrackingView.mService = this;
         mCloseView = (CloseDragHandle)mTrackingView.findViewById(R.id.close);
         mCloseView.mService = this;
+
+        mContext=context;
 
         mEdgeBorder = res.getDimensionPixelSize(R.dimen.status_bar_edge_ignore);
 
