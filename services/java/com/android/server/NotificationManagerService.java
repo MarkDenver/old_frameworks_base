@@ -1141,10 +1141,15 @@ public class NotificationManagerService extends INotificationManager.Stub
                 ledOnMS = mDefaultNotificationLedOn;
                 ledOffMS = mDefaultNotificationLedOff;
             }
-            if (mNotificationBlinkEnabled) {
-                // pulse repeatedly
+            if (mNotificationPulseEnabled) {
+                // pulse slowly
                 mNotificationLight.setFlashing(ledARGB, LightsService.LIGHT_FLASH_TIMED,
                         ledOnMS, ledOffMS);
+            if (mNotificationPulseEnabled && mNotificationBlinkEnabled) {
+                // pulse repeatedly
+                mNotificationLight.setFlashing(ledARGB, LightsService.LIGHT_FLASH_TIMED,
+                        1000, 1000);
+	    }
             } else {
                 // pulse only once
                 mNotificationLight.pulse(ledARGB, ledOnMS);
