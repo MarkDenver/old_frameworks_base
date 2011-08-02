@@ -193,6 +193,20 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         };
 
         mItems = Lists.newArrayList(
+		// Reboot first
+		new SinglePressAction(com.android.internal.R.drawable.ic_lock_reboot, R.string.global_action_reboot) {
+                        public void onPress() {
+                       	    ShutdownThread.reboot(mContext, null, true);
+			}
+									
+			public boolean showDuringKeyguard() {
+				return true;
+			}
+									
+			public boolean showBeforeProvisioning() {
+				return true;
+			}
+		},
                 // silent mode
                 mSilentModeToggle,
                 // next: airplane mode

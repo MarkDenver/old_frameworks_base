@@ -98,20 +98,57 @@ public final class ShutdownThread extends Thread {
         Log.d(TAG, "Notifying thread to start radio shutdown");
 
         if (confirm) {
-            final AlertDialog dialog = new AlertDialog.Builder(context)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle(com.android.internal.R.string.power_off)
-                    .setMessage(com.android.internal.R.string.shutdown_confirm)
-                    .setPositiveButton(com.android.internal.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            beginShutdownSequence(context);
-                        }
-                    })
-                    .setNegativeButton(com.android.internal.R.string.no, null)
-                    .create();
+            final AlertDialog dialog;
+            // Set different dialog message based on whether or not we're rebooting
+            if (mReboot) {
+                dialog = new AlertDialog.Builder(context)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(com.android.internal.R.string.reboot_system)
+				.setSingleChoiceItems(com.android.internal.R.array.shutdown_reboot_options, 0, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						if (which < 0)
+							return;
+									  
+						String actions[] = context.getResources().getStringArray(com.android.internal.R.array.shutdown_reboot_actions);
+									  
+						if (actions != null && which < actions.length)
+							mRebootReason = actions[which];
+					}
+				})
+				.setPositiveButton(com.android.internal.R.string.yes, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						mReboot = true;
+						beginShutdownSequence(context);
+					}
+				})
+				.setNegativeButton(com.android.internal.R.string.no, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						mReboot = false;
+						dialog.cancel();
+					}
+				})
+				.setOnCancelListener(new DialogInterface.OnCancelListener() {
+					public void onCancel(DialogInterface dialog) {
+						mReboot = false;
+					}
+				})
+				.create();
+            } else {
+                dialog = new AlertDialog.Builder(context)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(com.android.internal.R.string.power_off)
+				.setMessage(com.android.internal.R.string.shutdown_confirm)
+				.setPositiveButton(com.android.internal.R.string.yes, new DialogInterface.OnClickListener() {
+								   public void onClick(DialogInterface dialog, int which) {
+								   beginShutdownSequence(context);
+								   }
+								   })
+				.setNegativeButton(com.android.internal.R.string.no, null)
+				.create();
+            }
             dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
             if (!context.getResources().getBoolean(
-                    com.android.internal.R.bool.config_sf_slowBlur)) {
+												   com.android.internal.R.bool.config_sf_slowBlur)) {
                 dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
             }
             dialog.show();
