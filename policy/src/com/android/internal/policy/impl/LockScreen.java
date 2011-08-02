@@ -88,7 +88,7 @@ class LockScreen extends LinearLayout implements KeyguardScreen, KeyguardUpdateM
 			
 	private boolean mLockAlwaysMusicControls = (Settings.System.getInt(getContext().getContentResolver(),
 					Settings.System.LOCKSCREEN_ALWAYS_MUSIC_CONTROLS, 1) == 1);
-			
+
 	private TextView mNowPlaying;
 
     // current configuration state of keyboard and display
@@ -826,3 +826,4 @@ class LockScreen extends LinearLayout implements KeyguardScreen, KeyguardUpdateM
         mLockPatternUtils.updateEmergencyCallButtonState(mEmergencyCallButton);
     }
 }
+

@@ -247,9 +247,9 @@ public class KeyguardViewMediator implements KeyguardViewCallback,
      */
     private boolean mWaitingUntilKeyguardVisible = false;
 
-	private static String mArtist = null;
-	private static String mTrack = null;
-	private static Boolean mPlaying = null;
+    private static String mArtist = null;
+    private static String mTrack = null;
+    private static Boolean mPlaying = null;
 
     public KeyguardViewMediator(Context context, PhoneWindowManager callback,
             LocalPowerManager powerManager) {
@@ -1155,7 +1155,6 @@ public class KeyguardViewMediator implements KeyguardViewCallback,
 			context.sendBroadcast(intent);
 		}
 	};
-
 	public static String NowPlaying() {
 		if (mArtist != null && mPlaying) {
 			return (mArtist + " - " + mTrack);
@@ -1164,5 +1163,3 @@ public class KeyguardViewMediator implements KeyguardViewCallback,
 		}
 	}
 }
-
-
