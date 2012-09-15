@@ -1422,10 +1422,10 @@ public final class Settings {
          */
         public static final String VIBRATE_IN_SILENT = "vibrate_in_silent";
 
-		/**
-		 * @hide
-		 */
-		public static final String VOLUME_CONTROL_SILENT = "volume_control_silent";
+	/**
+	 *@hide
+	 */
+	public static final String VOLUME_CONTROL_SILENT = "volume_control_silent";
 
         /**
          * The mapping of stream type (integer) to its setting.
@@ -1835,7 +1835,6 @@ public final class Settings {
 		 * @hide
 		 */
 		public static final String EXPANDED_FLASH_MODE = "expanded_flash_mode";
-
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings

@@ -143,7 +143,7 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
     WindowManager.LayoutParams mTrackingParams;
     int mTrackingPosition; // the position of the top of the tracking view.
     private boolean mPanelSlightlyVisible;
-	
+
 	// the power widget
 	PowerWidget mPowerWidget;
 
@@ -322,7 +322,7 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
         mExpandedView.setVisibility(View.GONE);
         mOngoingTitle.setVisibility(View.GONE);
         mLatestTitle.setVisibility(View.GONE);
-		
+
 		mPowerWidget = (PowerWidget)expanded.findViewById(R.id.exp_power_stat);
 		mPowerWidget.setupSettingsObserver(mHandler);
 		mPowerWidget.setGlobalButtonOnClickListener(new View.OnClickListener() {
@@ -377,7 +377,7 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
         lp.windowAnimations = com.android.internal.R.style.Animation_StatusBar;
 
         WindowManagerImpl.getDefault().addView(view, lp);
-		
+
 		mPowerWidget.setupWidget();
 		boolean powerWidget = Settings.System.getInt(getContentResolver(),
 				Settings.System.EXPANDED_VIEW_WIDGET, 1) == 1;

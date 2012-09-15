@@ -165,9 +165,9 @@ public class KeyguardUpdateMonitor {
                     case MSG_PHONE_STATE_CHANGED:
                         handlePhoneStateChanged((String)msg.obj);
                         break;
-					case MSG_MUSIC_SONG_CHANGE:
-						handleSongUpdate();
-						break;
+		    case MSG_MUSIC_SONG_CHANGE:
+			handleSongUpdate();
+			break;
                 }
             }
         };
@@ -223,7 +223,7 @@ public class KeyguardUpdateMonitor {
         filter.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
         filter.addAction(SPN_STRINGS_UPDATED_ACTION);
         filter.addAction(AudioManager.RINGER_MODE_CHANGED_ACTION);
-		filter.addAction("internal.policy.impl.updateSongStatus");
+	filter.addAction("internal.policy.impl.updateSongStatus");
         context.registerReceiver(new BroadcastReceiver() {
 
             public void onReceive(Context context, Intent intent) {
@@ -257,9 +257,9 @@ public class KeyguardUpdateMonitor {
                 } else if (TelephonyManager.ACTION_PHONE_STATE_CHANGED.equals(action)) {
                     String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
                     mHandler.sendMessage(mHandler.obtainMessage(MSG_PHONE_STATE_CHANGED, state));
-				} else if ("internal.policy.impl.updateSongStatus".equals(action)) {
-					mHandler.sendMessage(mHandler.obtainMessage(MSG_MUSIC_SONG_CHANGE));
-				}
+		} else if ("internal.policy.impl.updateSongStatus".equals(action)) {
+		    mHandler.sendMessage(mHandler.obtainMessage(MSG_MUSIC_SONG_CHANGE));
+                }
             }
         }, filter);
     }
@@ -334,12 +334,12 @@ public class KeyguardUpdateMonitor {
             }
         }
     }
-	
-	/**
-	 * Handle {@link #MSG_MUSIC_SONG_CHANGED}
-	 */
-	private void handleSongUpdate() {
-		for (int i = 0; i < mInfoCallbacks.size(); i++)
+
+    /**
+     * Handle {@link #MSG_MUSIC_SONG_CHANGED}
+     */
+    private void handleSongUpdate() {
+	for (int i = 0; i < mInfoCallbacks.size(); i++)
 			mInfoCallbacks.get(i).onMusicChanged();
 	}
 
@@ -434,7 +434,7 @@ public class KeyguardUpdateMonitor {
     interface InfoCallback {
         void onRefreshBatteryInfo(boolean showBatteryInfo, boolean pluggedIn, int batteryLevel);
         void onTimeChanged();
-		void onMusicChanged();
+	void onMusicChanged();
 
         /**
          * @param plmn The operator name of the registered network.  May be null if it shouldn't

@@ -148,7 +148,7 @@ public final class ShutdownThread extends Thread {
             }
             dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
             if (!context.getResources().getBoolean(
-												   com.android.internal.R.bool.config_sf_slowBlur)) {
+                    com.android.internal.R.bool.config_sf_slowBlur)) {
                 dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
             }
             dialog.show();

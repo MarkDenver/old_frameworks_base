@@ -752,6 +752,7 @@ public class WifiService extends IWifiManager.Stub {
         }
     }
 
+
     /**
      * Enables/disables Wi-Fi AP synchronously. The driver is loaded
      * and soft access point configured as a single operation.

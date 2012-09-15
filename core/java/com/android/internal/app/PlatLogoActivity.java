@@ -29,7 +29,7 @@ public class PlatLogoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        mToast = Toast.makeText(this, "Graffiti by Kobie Solomon", Toast.LENGTH_SHORT);
+        mToast = Toast.makeText(this, "Zombie art by Jack Larson", Toast.LENGTH_SHORT);
 
         ImageView content = new ImageView(this);
         content.setImageResource(com.android.internal.R.drawable.platlogo);

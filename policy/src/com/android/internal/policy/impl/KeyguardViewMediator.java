@@ -51,7 +51,6 @@ import android.view.WindowManagerPolicy;
 import android.widget.TextView;
 
 
-
 /**
  * Mediates requests related to the keyguard.  This includes queries about the
  * state of the keyguard, power management events that effect whether the keyguard

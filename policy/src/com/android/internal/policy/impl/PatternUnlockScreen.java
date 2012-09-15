@@ -581,7 +581,7 @@ class PatternUnlockScreen extends LinearLayoutWithDefaultTouchRecepient
         refreshEmergencyButtonText();
     }
 
-	public void onMusicChanged() {
+    public void onMusicChanged() {
 
-	}
+    }
 }

@@ -85,10 +85,10 @@ public class SlidingTab extends ViewGroup {
     private Slider mOtherSlider;
     private boolean mAnimating;
     private Rect mTmpRect;
-	/*
-	 * true if haptic feedback is enabled
-	 */
-	private boolean mShouldVibrate = true;
+    /*
+     * true if haptic feedback is enabled
+     */
+    private boolean mShouldVibrate = true;
 
     /**
      * Listener used to reset the view when the current animation completes.

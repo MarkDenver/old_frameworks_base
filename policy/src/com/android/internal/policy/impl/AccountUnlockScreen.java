@@ -347,8 +347,8 @@ public class AccountUnlockScreen extends RelativeLayout implements KeyguardScree
     public void onTimeChanged() {
 
     }
-
-	public void onMusicChanged() {
+	
+    public void onMusicChanged() {
 				
 	}
 }
