@@ -130,6 +130,7 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
     NotificationData mLatest = new NotificationData();
     TextView mLatestTitle;
     LinearLayout mLatestItems;
+    ItemTouchDispatcher mTouchDispatcher;
     // position
     int[] mPositionTmp = new int[2];
     boolean mExpanded;
@@ -283,11 +284,14 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
     private void makeStatusBarView(Context context) {
         Resources res = context.getResources();
 
+	mTouchDispatcher = new ItemTouchDispatcher(this);
+
         mIconSize = res.getDimensionPixelSize(com.android.internal.R.dimen.status_bar_icon_size);
 
         ExpandedView expanded = (ExpandedView)View.inflate(context,
                 R.layout.status_bar_expanded, null);
         expanded.mService = this;
+	expanded.mTouchDispatcher = mTouchDispatcher;
 
         StatusBarView sb = (StatusBarView)View.inflate(context, R.layout.status_bar, null);
         sb.mService = this;
@@ -543,7 +547,7 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
         }
     }
 
-    View[] makeNotificationView(StatusBarNotification notification, ViewGroup parent) {
+    View[] makeNotificationView(final StatusBarNotification notification, ViewGroup parent) {
         Notification n = notification.notification;
         RemoteViews remoteViews = n.contentView;
         if (remoteViews == null) {
@@ -552,7 +556,18 @@ public class StatusBarService extends Service implements CommandQueue.Callbacks 
 
         // create the row view
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.status_bar_latest_event, parent, false);
+                LatestItemContainer row = (LatestItemContainer) inflater.inflate(R.layout.status_bar_latest_event, parent, false);
+        if ((n.flags & Notification.FLAG_ONGOING_EVENT) == 0 && (n.flags & Notification.FLAG_NO_CLEAR) == 0) {
+            row.setOnSwipeCallback(mTouchDispatcher, new Runnable() {
+                public void run() {
+                    try {
+                        mBarService.onNotificationClear(notification.pkg, notification.tag, notification.id);
+                    } catch (RemoteException e) {
+                        // Skip it, don't crash.
+                    }
+                }
+            });
+        }
 
         // bind the click event to the content area
         ViewGroup content = (ViewGroup)row.findViewById(R.id.content);

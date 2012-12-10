@@ -1644,6 +1644,12 @@ public final class Settings {
         public static final String HAPTIC_FEEDBACK_ENABLED = "haptic_feedback_enabled";
 
         /**
+         * Set values for haptic feedback from typing on keypad (new for Froyo)
+         * @hide
+         */
+        public static final String HAPTIC_TAP_ARRAY = "haptic_tap_array";
+
+        /**
          * Whether live web suggestions while the user types into search dialogs are
          * enabled. Browsers and other search UIs should respect this, as it allows
          * a user to avoid sending partial queries to a search engine, if it poses
